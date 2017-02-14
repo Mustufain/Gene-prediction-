@@ -47,7 +47,7 @@ logr.fit(x_train,y_train)
 y_pred = logr.predict(x_test)
 print (roc_auc_score(y_test,y_pred))
 
-
+print("ali")
 
 
 
