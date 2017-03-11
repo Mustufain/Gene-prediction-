@@ -6,9 +6,10 @@ from  sklearn.model_selection import train_test_split
 import csv
 import numpy as np
 import os
+from sklearn.model_selection import cross_val_score
 
 data_path = "Data"
-
+#15485 genes
 
 x_train = np.loadtxt(data_path + os.sep + "x_train.csv",delimiter=',',skiprows=1)
 y_train = np.loadtxt(data_path + os.sep + "y_train.csv",delimiter=',',skiprows=1)
@@ -39,15 +40,41 @@ x_test= [j.ravel() for j in x_test]
 
 x_train = np.array(x_train)
 x_test = np.array(x_test)
-
+penalty = ["l1","l2"]
+ori_test = x_test
 logr = linear_model.LogisticRegression()
-
-x_train, x_test, y_train, y_test = train_test_split(x_train, y_train, test_size=0.4, random_state=0)
+predicted_class=[]
+#x1_train, x1_test, y1_train, y1_test = train_test_split(x_train, y_train, test_size=0.1, random_state=0)
+#We have 2 classes 0 and 1
+#C_range = 10.0 ** np.arange(-4, 3)
+#for c in C_range:
+c= 0.10000000000000001
+logr.penalty = penalty[0]
+logr.C = c
 logr.fit(x_train,y_train)
-y_pred = logr.predict(x_test)
-print (roc_auc_score(y_test,y_pred))
+#print (roc_auc_score(y1_test,logr.predict(x1_test)))
+y_pred = logr.predict_proba(x_test)
+#print (roc_auc_score(y1_test,y_pred))
 
-print("ali")
+# penalty = l1 c =  0.10000000000000001  ---> 0.85395
+# penalty = l2 c =    ---->
+
+geneId=0
+#print(y_pred.shape)
+f = open("kaggle.csv","r+")
+f.write("GeneId,prediction")
+f.write("\n")
+for i in y_pred:
+
+    geneId = geneId + 1
+    f.write(str(geneId)+","+str(i[1]))
+    f.write("\n")
+
+
+
+f.close()
+
+
 
 
 
