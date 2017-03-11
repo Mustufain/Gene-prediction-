@@ -70,7 +70,10 @@ for i in y_pred:
     f.write(str(geneId)+","+str(i[1]))
     f.write("\n")
 
+
+
 f.close()
+
 
 
 
